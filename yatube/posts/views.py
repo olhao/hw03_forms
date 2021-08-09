@@ -3,8 +3,6 @@ from django.core.paginator import Paginator
 from .models import Group, Post, User
 from .forms import PostForm
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
 
 
 def index(request):
@@ -17,9 +15,9 @@ def index(request):
     }
     return render(request, 'posts/index.html', context)
 
+
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    #posts = group.posts.all()[:10]
     post_list = Post.objects.all()
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
@@ -29,6 +27,7 @@ def group_posts(request, slug):
         'page_obj': page_obj,
     }
     return render(request, 'posts/group_list.html', context)
+
 
 def profile(request, username):
     user = get_object_or_404(User, username=username)
@@ -44,8 +43,8 @@ def profile(request, username):
     }
     return render(request, 'posts/profile.html', context)
 
-def post_detail(request, post_id):
 
+def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     user = get_object_or_404(User, username=post.author)
     post_number = Post.objects.filter(author=user).count()
@@ -58,6 +57,7 @@ def post_detail(request, post_id):
     }
     return render(request, 'posts/post_detail.html', context)
 
+
 @login_required
 def post_create(request):
     if request.method == 'POST':
@@ -69,7 +69,9 @@ def post_create(request):
             return redirect('posts:profile', username=post.author)
     else:
         form = PostForm()
-    return render(request, 'posts/create_post.html', {'form': form, 'username': request.user})
+    return render(request, 'posts/create_post.html',
+                  {'form': form, 'username': request.user})
+
 
 @login_required
 def post_edit(request, post_id):
@@ -84,17 +86,5 @@ def post_edit(request, post_id):
             return redirect('posts:post_detail', post_id=post_id)
     else:
         form = PostForm(instance=post)
-    return render(request, 'posts/create_post.html', {'form': form, 'username': request.user, 'is_edit': True})
-
-'''
-    
-
-class PostCreate(CreateView):
-    form_class = PostForm
-    template_name = "posts/create_post.html"
-    success_url = reverse_lazy("posts:post_create")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['username'] =
-        return context'''
+    return render(request, 'posts/create_post.html',
+                  {'form': form, 'username': request.user, 'is_edit': True})

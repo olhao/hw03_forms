@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
 
@@ -13,6 +12,7 @@ class AboutAuthorView(TemplateView):
         context['title'] = 'Привет, я автор'
 
         return context
+
 
 # Описать класс AboutTechView для страницы about/tech
 class AboutTechView(TemplateView):
