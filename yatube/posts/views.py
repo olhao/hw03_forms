@@ -52,7 +52,7 @@ def post_detail(request, post_id):
         'post': post,
         'post_number': post_number,
         'author': user,
-        'username': request.user.username,
+        'username': user, #request.user.username
         'post_id': post_id,
     }
     return render(request, 'posts/post_detail.html', context)
