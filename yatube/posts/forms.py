@@ -9,7 +9,6 @@ class PostForm(ModelForm):
         attrs={"rows": 10, "cols": 40}), required=True)
 
     group = forms.ModelChoiceField(queryset=Group.objects.all(),
-                                   #to_field_name="title",
                                    required=False)
 
     class Meta:
