@@ -62,15 +62,14 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
-    if request.method != 'POST':
-        form = PostForm()
-    else:
-        form = PostForm(request.POST or None)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('posts:profile', username=post.author)
+
+    form = PostForm(request.POST or None)
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect('posts:profile', username=post.author)
+
     return render(request, 'posts/create_post.html',
                   {'form': form, 'username': request.user})
 
@@ -79,15 +78,12 @@ def post_create(request):
 def post_edit(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
 
-    if request.method != "POST":
-        form = PostForm(instance=post)
-    else:
-        form = PostForm(request.POST or None, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('posts:post_detail', post_id=post_id)
+    form = PostForm(request.POST or None, instance=post)
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect('posts:post_detail', post_id=post_id)
 
     return render(request, 'posts/create_post.html',
                   {'form': form, 'username': request.user, 'is_edit': True})

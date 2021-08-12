@@ -144,3 +144,10 @@ dmypy.json
 .history/
 
 .mypy_cache
+
+# report with test coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
